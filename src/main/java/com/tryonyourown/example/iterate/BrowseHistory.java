@@ -1,39 +1,37 @@
 package com.tryonyourown.example.iterate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BrowseHistory {
-    private List<String> urls = new ArrayList();
+    private int count = 0;
+    private String[] urls = new String[10];
 
     public Iterator createIterator() {
-        return new ListIterator(this);
+        return new ArrayIterator(this);
     }
 
     public void push(String url) {
-        urls.add(url);
+        urls[count++] = url;
     }
 
     public String pop() {
-        int lastIndex = urls.size() - 1;
-        return urls.remove(lastIndex);
+        return urls[--count];
     }
 
-    class ListIterator implements Iterator {
+    class ArrayIterator implements Iterator {
         BrowseHistory history;
-        int index = 0;
-        ListIterator(BrowseHistory history) {
+        private int index = 0;
+        ArrayIterator(BrowseHistory history) {
             this.history = history;
         }
         public boolean hasNext() {
-            int urlsCount = history.urls.size();
-            return index < urlsCount;
+            return index < history.count;
         }
         public void next() {
-            index++;
+            if(index < history.count) {
+                index++;
+            }
         }
         public String current() {
-            return history.urls.get(index);
+            return history.urls[index];
         }
     }
 }
